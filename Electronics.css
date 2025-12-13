@@ -362,3 +362,25 @@ footer {
 .submit-btn:hover {
     background: #5568d3;
 }
+
+/* SUCCESS TOAST */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #22c55e;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}

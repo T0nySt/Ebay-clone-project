@@ -11,210 +11,157 @@
 
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <div class="container">
-            <nav>
-                <a href="index.html" class="logo">BidPay</a>
+<header>
+    <div class="container">
+        <nav>
+            <a href="index.html" class="logo">BidPay</a>
 
-                <div class="search-bar">
-                    <input type="text" placeholder="Search for anything..." />
-                    <button>Search</button>
-                </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for anything..." />
+                <button>Search</button>
+            </div>
 
-                <div class="nav-links">
-                    <div class="dropdown">
-                        <button class="dropbutton">Pages ▾</button>
-                        <div class="dropdown-content">
-                            <a href="index.html">Home</a>
-                            <a href="electronics.html">Electronics</a>
-                            <a href="furniture.html">Furniture</a>
-                            <a href="vehicles.html">Cars</a>
-                        </div>
+            <div class="nav-links">
+                <div class="dropdown">
+                    <button class="dropbutton">Pages ▾</button>
+                    <div class="dropdown-content">
+                        <a href="index.html">Home</a>
+                        <a href="electronics.html">Electronics</a>
+                        <a href="furniture.html">Furniture</a>
+                        <a href="vehicles.html">Cars</a>
                     </div>
-
-                    <a href="#">Watch List</a>
-                    <a href="#">My BidPay</a>
-                    <a href="#" class="btn-primary">Sign In</a>
                 </div>
-            </nav>
-        </div>
-    </header>
 
-
-    <!-- HERO -->
-    <section class="hero">
-        <div class="container">
-            <h1>Latest Electronics & Gadgets</h1>
-            <p>Bid, win and own cutting-edge tech - from smartphones to gaming gear!</p>
-
-            <div class="hero-buttons">
-                <a href="#auctions" class="btn btn-large">View Auctions</a>
-                <a href="#" class="btn btn-outline">Start Selling</a>
+                <a href="#">Watch List</a>
+                <a href="#">My BidPay</a>
+                <a href="#" class="btn-primary">Sign In</a>
             </div>
-        </div>
-    </section>
+        </nav>
+    </div>
+</header>
 
+<section class="hero">
+    <div class="container">
+        <h1>Latest Electronics & Gadgets</h1>
+        <p>Bid, win and own cutting-edge tech - from smartphones to gaming gear!</p>
+    </div>
+</section>
 
-    <!-- ELECTRONICS LIST (loaded from DB) -->
-    <section class="featured-auctions" id="auctions">
-        <div class="container">
-            <h2 class="section-title">Top Electronic Auctions</h2>
+<section class="featured-auctions" id="auctions">
+    <div class="container">
+        <h2 class="section-title">Top Electronic Auctions</h2>
+        <div class="auction-grid" id="itemsContainer"></div>
+    </div>
+</section>
 
-            <div class="auction-grid" id="itemsContainer">
-                <!-- ITEMS WILL BE LOADED HERE BY JS -->
-            </div>
+<!-- BID MODAL -->
+<div id="bidModal" class="modal">
+    <div class="modal-content">
+        <h2>Place Your Bid</h2>
+        <p id="modalItemTitle"></p>
 
-        </div>
-    </section>
+        <input type="number" id="bidInput" placeholder="Enter bid amount" />
 
-
-
-    <!-- BID MODAL -->
-    <div id="bidModal" class="modal">
-        <div class="modal-content">
-            <h2>Place Your Bid</h2>
-            <p id="modalItemTitle"></p>
-
-            <input type="number" id="bidInput" placeholder="Enter bid amount" />
-
-            <div class="modal-buttons">
-                <button id="cancelBid" class="cancel-btn">Cancel</button>
-                <button id="submitBid" class="submit-btn">Submit Bid</button>
-            </div>
+        <div class="modal-buttons">
+            <button id="cancelBid" class="cancel-btn">Cancel</button>
+            <button id="submitBid" class="submit-btn">Submit Bid</button>
         </div>
     </div>
+</div>
 
+<!-- ✅ SUCCESS TOAST -->
+<div id="successToast" class="toast">
+    Bid placed successfully!
+</div>
 
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About BidPay</h4>
-                    <ul>
-                        <li><a href="#">Company Info</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Help Center</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Shop</h4>
-                    <ul>
-                        <li><a href="#">Electronics</a></li>
-                        <li><a href="#">Fashion</a></li>
-                        <li><a href="#">Collectibles</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <ul>
-                        <li><a href="#">Instagram</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Facebook</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                &copy; 2025 BidBay | All Rights Reserved
-            </div>
+<footer>
+    <div class="container">
+        <div class="footer-bottom">
+            &copy; 2025 BidBay | All Rights Reserved
         </div>
-    </footer>
+    </div>
+</footer>
 
+<script>
+const API_URL = "https://bid-bay-be.onrender.com/api/items";
+let selectedItemId = null;
 
+async function loadItems() {
+    const res = await fetch(`${API_URL}?category=electronics`);
+    const items = await res.json();
 
-    <!-- JS: LOAD ITEMS + BID MODAL LOGIC -->
-    <script>
-        const API_URL = "https://bid-bay-be.onrender.com/api/items";
-        let selectedItemId = null;
+    const container = document.getElementById("itemsContainer");
+    container.innerHTML = "";
 
-        async function loadItems() {
-            const res = await fetch(`${API_URL}?category=electronics`);
-            const items = await res.json();
-
-            const container = document.getElementById("itemsContainer");
-            container.innerHTML = "";
-
-            items.forEach(item => {
-                container.innerHTML += `
-                    <div class="auction-card">
-                        <div class="auction-image">
-                            <img src="${item.image}" alt="${item.title}" />
-                        </div>
-
-                        <div class="auction-details">
-                            <h3>${item.title}</h3>
-
-                            <p class="auction-price">$${item.currentPrice}</p>
-
-                            <div class="auction-info">
-                                <span>Latest bid: $${item.latestBid || item.currentPrice}</span>
-                                <span>${item.bids.length} bids</span>
-                            </div>
-
-                            <button 
-                                class="bid-btn" 
-                                data-id="${item._id}" 
-                                data-title="${item.title}">
-                                Place Bid
-                            </button>
-                        </div>
+    items.forEach(item => {
+        container.innerHTML += `
+            <div class="auction-card">
+                <div class="auction-image">
+                    <img src="${item.image}" alt="${item.title}" />
+                </div>
+                <div class="auction-details">
+                    <h3>${item.title}</h3>
+                    <p class="auction-price">$${item.currentPrice}</p>
+                    <div class="auction-info">
+                        <span>Latest bid: $${item.latestBid || item.currentPrice}</span>
+                        <span>${item.bids.length} bids</span>
                     </div>
-                `;
-            });
-        }
+                    <button class="bid-btn" data-id="${item._id}" data-title="${item.title}">
+                        Place Bid
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+}
 
-        // Load items on page open
+loadItems();
+
+/* OPEN MODAL */
+document.addEventListener("click", e => {
+    if (e.target.classList.contains("bid-btn")) {
+        selectedItemId = e.target.dataset.id;
+        document.getElementById("modalItemTitle").textContent =
+            "Item: " + e.target.dataset.title;
+        document.getElementById("bidInput").value = "";
+        document.getElementById("bidModal").style.display = "flex";
+    }
+});
+
+/* CLOSE MODAL */
+document.getElementById("cancelBid").onclick = () => {
+    document.getElementById("bidModal").style.display = "none";
+};
+
+/* SUBMIT BID */
+document.getElementById("submitBid").onclick = async () => {
+    const amount = Number(document.getElementById("bidInput").value);
+    if (!amount || amount <= 0) return;
+
+    const res = await fetch(`${API_URL}/${selectedItemId}/bid`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount })
+    });
+
+    if (res.ok) {
+        showToast();
         loadItems();
+    }
 
+    document.getElementById("bidModal").style.display = "none";
+};
 
-        // OPEN MODAL
-        document.addEventListener("click", e => {
-            if (e.target.classList.contains("bid-btn")) {
-                selectedItemId = e.target.dataset.id;
-                const title = e.target.dataset.title;
+/* SHOW TOAST */
+function showToast() {
+    const toast = document.getElementById("successToast");
+    toast.classList.add("show");
 
-                document.getElementById("modalItemTitle").textContent = "Item: " + title;
-                document.getElementById("bidModal").style.display = "flex";
-            }
-        });
-
-        // CLOSE MODAL
-        document.getElementById("cancelBid").addEventListener("click", () => {
-            document.getElementById("bidModal").style.display = "none";
-        });
-
-        // SUBMIT BID
-        document.getElementById("submitBid").addEventListener("click", async () => {
-            const amount = Number(document.getElementById("bidInput").value);
-
-            if (!amount || amount <= 0) {
-                alert("Enter a valid bid amount.");
-                return;
-            }
-
-            const res = await fetch(`${API_URL}/${selectedItemId}/bid`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount })
-            });
-
-            const data = await res.json();
-
-            if (data.success) {
-                alert("Bid placed successfully!");
-                loadItems(); // refresh items
-            } else {
-                alert("Error: " + data.message);
-            }
-
-            document.getElementById("bidModal").style.display = "none";
-        });
-    </script>
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2000);
+}
+</script>
 
 </body>
 </html>
