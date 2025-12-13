@@ -290,7 +290,62 @@ nav {
 .Liv, .Kitchen{
     display: none;
 }
+.auction-grid {
+  display: none;
+}
 
+.auction-grid.Bedroom {
+  display: grid;
+}
+  footer {
+    background: #1f2937;
+    color: white;
+    padding: 3rem 0 1rem;
+    margin-top: 3rem;
+  }
+  
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+    justify-items: center;
+    text-align: left;
+  }
+  
+  .footer-section h4 {
+    margin-bottom: 1rem;
+    color: #f59e0b;
+  }
+  
+  .footer-section ul {
+    list-style: none;
+  }
+  
+  .footer-section ul li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-section a {
+    color: #d1d5db;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .footer-section a:hover {
+    color: #f59e0b;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid #374151;
+    color: #9ca3af;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
 
 
 

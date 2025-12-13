@@ -1,7 +1,7 @@
 let doc = document.body;
-let bedroom = doc.querySelector('.Items-List.Bedroom')
-let kitchen = doc.querySelector('.Items-List.Kitchen')
-let living = doc.querySelector('.Items-List.Liv')
+let bedroom = doc.querySelector('.Bedroom.auction-grid')
+let kitchen = doc.querySelector('.Kitchen.auction-grid')
+let living = doc.querySelector('.Liv.auction-grid')
 filterBedroom = ()=>{
     bedroom.style.display = 'grid';
     kitchen.style.display = 'none';
