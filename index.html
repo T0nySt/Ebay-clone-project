@@ -1,234 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BidPay - Buy, Sell, Bid on Anything</title>
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <header>
-      <div class="container">
-        <nav>
-          <a href="index.html" class="logo">BidPay</a>
-        
-          <div class="search-bar">
-            <input type="text" placeholder="Search for anything..." />
-            <button>Search</button>
-          </div>
-        
-          <div class="nav-links">
-            <div class="dropdown">
-              <button class="dropbutton"> Pages ▾</button>
-                <div class="dropdown-content">
-                  <a href="index.html">Home</a>
-                  <a href="Electronics.html">Electronics</a>
-                  <a href="Furniture.html">Furniture</a>
-                  <a href="vehicles.html">Cars</a>
-                </div>
-          </div>
-            <a href="#">Watch List</a>
-            <a href="#">My BidPay</a>
-            <a href="#" class="btn-primary">Sign In</a>
-          </div>
-        </nav>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BidPay - Buy, Sell, Bid on Anything</title>
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <a href="index.html" class="logo">BidPay</a>
+
+      <div class="search-bar">
+        <input type="text" placeholder="Search for anything..." />
+        <button>Search</button>
       </div>
-    </header>
 
-    <section class="hero">
-      <div class="container">
-        <h1>Bid, Buy, and Sell with Confidence</h1>
-        <p>
-          Discover unique items and win amazing deals in our online auction
-          marketplace
-        </p>
-        <div class="hero-buttons">
-          <a href="#" class="btn btn-large">Start Bidding</a>
-          <a href="#" class="btn btn-outline">Sell Your Items</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="categories">
-      <div class="container">
-        <h2 class="section-title">Browse by Category</h2>
-        <div class="category-grid">
-          <a href="Electronics.html" style="text-decoration: none;">
-          <div class="category-card">
-            <div class="category-icon">📱</div>
-            <h3>Electronics</h3>
-          </div>
-        </a>
-          <div class="category-card">
-            <div class="category-icon">👗</div>
-            <h3>Fashion</h3>
-          </div>
-
-          <a href="Furniture.html" style="text-decoration: none;">
-            <div class="category-card">
-              <div class="category-icon">🛋️</div>
-              <h3>Furniture</h3>
-            </div>
-          </a>
-          
-
-          <a href="vehicles.html" style="text-decoration: none">
-          <div class="category-card">
-            <div class="category-icon">🚗</div>
-            <h3>cars</h3>
-          </div>
-        </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="featured-auctions" id="auctions">
-      <div class="container">
-          <h2 class="section-title">Top Auction Items</h2>
-
-          <div class="auction-grid">
-              <div class="auction-card">
-                  <div class="auction-image">
-                      <img src="img/laptop.jpg" alt="Laptop" />
-                  </div>
-                  <div class="auction-details">
-                      <h3> Apple MacBook Pro 14" M3</h3>
-                      <p class="auction-price">$1,500</p>
-                      <div class="auction-info">
-                          <span> Ends in: 2h 35m</span>
-                          <span> 32 bids</span>
-                      </div>
-                      <button class="bid-btn">Place Bid</button>
-                  </div>
-              </div>
-
-              <div class="auction-card">
-                  <div class="auction-image">
-                      <img src="img/ps5.jpg" alt="PS5 Console" />
-                  </div>
-                  <div class="auction-details">
-                      <h3> Sony PlayStation 5 (Disc Edition)</h3>
-                      <p class="auction-price">$620</p>
-                      <div class="auction-info">
-                          <span> Ends in: 5h 10m</span>
-                          <span> 28 bids</span>
-                      </div>
-                      <button class="bid-btn">Place Bid</button>
-                  </div>
-              </div>
-              <div class="auction-card">
-                <div class="auction-image">
-                    <img src="img/equinox.jpg" alt="Equinox" />
-                </div>
-                <div class="auction-details">
-                  <h3>2018 Cheverolet Equinox</h3>
-                  <div class="auction-price">$19,800</div>
-                  <div class="auction-info">
-                    <span> Ends in: 9h 55m</span>
-                    <span>15 bids</span>
-                  </div>
-                  <button class="bid-btn">Place Bid</button>
-                </div>
-              </div>
-
-              <div class="auction-card">
-                  <div class="auction-image">
-                    <img src="img/smartwatch.jpg" alt="Smartwatch" />
-                  </div>
-                  <div class="auction-details">
-                    <h3>Samsung Galaxy Watch 6</h3>
-                    <p class="auction-price">$190</p>
-                    <div class="auction-info">
-                      <span>Ends in: 6h 20m</span>
-                      <span>8 bids</span>
-                    </div>
-                    <button class="bid-btn">Place Bid</button>
-                  </div>
-                </div>
-
-                <div class="auction-card">
-                  <div class="auction-image">
-                    <img src="img/camera.jpg" alt="Camera" />
-                  </div>
-                  <div class="auction-details">
-                    <h3> Canon Camera</h3>
-                    <p class="auction-price">$360</p>
-                    <div class="auction-info">
-                      <span>Ends in: 2h 40m</span>
-                      <span>7 bids</span>
-                    </div>
-                    <button class="bid-btn">Place Bid</button>
-                  </div>
-                </div>
-
-                <div class="auction-card">
-                  <div class="auction-image">
-                    <img src="img/tv.jpg" alt="TV" />
-                  </div>
-                  <div class="auction-details">
-                    <h3> 45' Samsung 4K, HD TV</h3>
-                    <p class="auction-price">$1260</p>
-                    <div class="auction-info">
-                      <span>Ends in: 7h 20m</span>
-                      <span>6 bids</span>
-                    </div>
-                    <button class="bid-btn">Place Bid</button>
-                  </div>
-                </div>
-
-
-          </div>
-      </div>
-  </section>
-
-    <footer>
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h4>About BidPay</h4>
-            <ul>
-              <li><a href="#">About Us</a></li>
-              <li><a href="#">Careers</a></li>
-              <li><a href="#">Press</a></li>
-              <li><a href="#">Blog</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Buy</h4>
-            <ul>
-              <li><a href="#">How to Bid</a></li>
-              <li><a href="#">Buyer Protection</a></li>
-              <li><a href="#">Payment Methods</a></li>
-              <li><a href="#">Shipping</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Sell</h4>
-            <ul>
-              <li><a href="#">Start Selling</a></li>
-              <li><a href="#">Seller Center</a></li>
-              <li><a href="#">Fees</a></li>
-              <li><a href="#">Seller Protection</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Support</h4>
-            <ul>
-              <li><a href="#">Help Center</a></li>
-              <li><a href="#">Contact Us</a></li>
-              <li><a href="#">Community</a></li>
-              <li><a href="#">Resolution Center</a></li>
-            </ul>
+      <div class="nav-links">
+        <div class="dropdown">
+          <button class="dropbutton">Pages ▾</button>
+          <div class="dropdown-content">
+            <a href="index.html">Home</a>
+            <a href="electronics.html">Electronics</a>
+            <a href="furniture.html">Furniture</a>
+            <a href="vehicles.html">Cars</a>
           </div>
         </div>
-        <div class="footer-bottom">
-          <p>
-            &copy; 2025 BidPay. Raymond Huang, Tony Stone, Boris Maho, Prabodh
-            KC. |
-            <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
-          </p>
+        <a href="#">Watch List</a>
+        <a href="#">My BidPay</a>
+        <a href="#" class="btn-primary">Sign In</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1>Bid, Buy, and Sell with Confidence</h1>
+    <p>Discover unique items and win amazing deals</p>
+  </div>
+</section>
+
+<section class="featured-auctions">
+  <div class="container">
+    <h2 class="section-title">Top Auction Items</h2>
+    <div class="auction-grid" id="itemsContainer"></div>
+  </div>
+</section>
+
+<!-- BID MODAL -->
+<div id="bidModal" class="modal">
+  <div class="modal-content">
+    <h2>Place Your Bid</h2>
+    <p id="modalItemTitle"></p>
+
+    <input type="number" id="bidInput" placeholder="Enter bid amount" />
+
+    <div class="modal-buttons">
+      <button id="cancelBid" class="cancel-btn">Cancel</button>
+      <button id="submitBid" class="submit-btn">Submit Bid</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS TOAST -->
+<div id="successToast" class="toast">
+  Bid placed successfully!
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      &copy; 2025 BidPay | All Rights Reserved
+    </div>
+  </div>
+</footer>
+
+<script>
+const API_URL = "https://bid-bay-be.onrender.com/api/items";
+let selectedItemId = null;
+
+/* ✅ TIMER HELPER (ADDED) */
+function getFakeEndTime(itemId) {
+  const seed = parseInt(itemId.slice(-2), 16);
+  const days = seed % 4;        // 0–3 days
+  const hours = (seed * 5) % 24;
+
+  if (days === 0) return `Ends in: ${hours + 2}h`;
+  return `Ends in: ${days}d ${hours}h`;
+}
+
+/* LOAD TOP 6 MOST-BID ITEMS */
+async function loadTopItems() {
+  const res = await fetch(API_URL);
+  const items = await res.json();
+
+  items.sort((a, b) => b.bids.length - a.bids.length);
+
+  const container = document.getElementById("itemsContainer");
+  container.innerHTML = "";
+
+  items.slice(0, 6).forEach(item => {
+    container.innerHTML += `
+      <div class="auction-card">
+        <div class="auction-image">
+          <img src="${item.image}" alt="${item.title}" />
+        </div>
+        <div class="auction-details">
+          <h3>${item.title}</h3>
+          <p class="auction-price">$${item.latestBid ?? item.currentPrice}</p>
+          <div class="auction-info">
+            <span>${getFakeEndTime(item._id)}</span>
+            <span>${item.bids.length} bids</span>
+          </div>
+          <button class="bid-btn"
+            data-id="${item._id}"
+            data-title="${item.title}">
+            Place Bid
+          </button>
         </div>
       </div>
-    </footer>
-  </body>
+    `;
+  });
+}
+
+loadTopItems();
+
+/* OPEN MODAL */
+document.addEventListener("click", e => {
+  if (e.target.classList.contains("bid-btn")) {
+    selectedItemId = e.target.dataset.id;
+    document.getElementById("modalItemTitle").textContent =
+      "Item: " + e.target.dataset.title;
+    document.getElementById("bidInput").value = "";
+    document.getElementById("bidModal").style.display = "flex";
+  }
+});
+
+/* CLOSE MODAL */
+document.getElementById("cancelBid").onclick = () => {
+  document.getElementById("bidModal").style.display = "none";
+};
+
+/* SUBMIT BID */
+document.getElementById("submitBid").onclick = async () => {
+  const amount = Number(document.getElementById("bidInput").value);
+  if (!amount || amount <= 0) return;
+
+  const res = await fetch(`${API_URL}/${selectedItemId}/bid`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ amount })
+  });
+
+  if (res.ok) {
+    showToast();
+    loadTopItems();
+  }
+
+  document.getElementById("bidModal").style.display = "none";
+};
+
+/* TOAST */
+function showToast() {
+  const toast = document.getElementById("successToast");
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
+</script>
+
+</body>
 </html>

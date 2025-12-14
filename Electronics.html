@@ -86,6 +86,16 @@
 const API_URL = "https://bid-bay-be.onrender.com/api/items";
 let selectedItemId = null;
 
+/* ✅ TIMER HELPER (ADDED) */
+function getFakeEndTime(itemId) {
+    const seed = parseInt(itemId.slice(-2), 16);
+    const days = seed % 3;        // 0–2 days
+    const hours = (seed * 3) % 24;
+
+    if (days === 0) return `Ends in: ${hours + 1}h`;
+    return `Ends in: ${days}d ${hours}h`;
+}
+
 async function loadItems() {
     const res = await fetch(`${API_URL}?category=electronics`);
     const items = await res.json();
@@ -103,7 +113,7 @@ async function loadItems() {
                     <h3>${item.title}</h3>
                     <p class="auction-price">$${item.currentPrice}</p>
                     <div class="auction-info">
-                        <span>Latest bid: $${item.latestBid || item.currentPrice}</span>
+                        <span>${getFakeEndTime(item._id)}</span>
                         <span>${item.bids.length} bids</span>
                     </div>
                     <button class="bid-btn" data-id="${item._id}" data-title="${item.title}">
