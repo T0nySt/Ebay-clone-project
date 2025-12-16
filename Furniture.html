@@ -6,12 +6,11 @@
   <title>BidPay | Furniture</title>
 
   <link rel="stylesheet" href="index.css" />
-  <link rel="stylesheet" href="Furniture.css?v=3" />
+  <link rel="stylesheet" href="Furniture.css" />
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="container">
     <nav>
@@ -33,17 +32,13 @@
           </div>
         </div>
 
-        <!-- SELL (PROTECTED) -->
         <a href="#" id="sellLink">Sell</a>
-
-        <!-- AUTH BUTTON (CONSISTENT STYLE) -->
         <a href="#" class="btn-primary" id="authBtn">Sign In</a>
       </div>
     </nav>
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-content">
     <h1>Find Your Perfect Furniture</h1>
@@ -55,7 +50,6 @@
   </div>
 </section>
 
-<!-- CATEGORY SELECTOR -->
 <div class="specs">
   <div class="Bed" onclick="showSection('bedroom')">
     <img src="img/Bedroom.jpg" alt="Bedroom" />
@@ -75,7 +69,6 @@
 
 <div class="Availible"><h2>Available Items</h2></div>
 
-<!-- AUCTIONS -->
 <section class="featured-auctions" id="auctions">
   <div class="container">
     <div id="bedroom" class="auction-grid"></div>
@@ -84,69 +77,22 @@
   </div>
 </section>
 
-<!-- BID MODAL -->
 <div id="bidModal" class="modal">
   <div class="modal-content">
     <h2>Place Your Bid</h2>
     <p id="modalItemTitle"></p>
     <input type="number" id="bidInput" placeholder="Enter bid amount" />
     <div class="modal-buttons">
-      <button id="cancelBid" class="cancel-btn" type="button">Cancel</button>
-      <button id="submitBid" class="submit-btn" type="button">Submit Bid</button>
+      <button id="cancelBid" class="cancel-btn">Cancel</button>
+      <button id="submitBid" class="submit-btn">Submit Bid</button>
     </div>
   </div>
 </div>
 
-<!-- SUCCESS TOAST -->
 <div id="successToast" class="success-toast">Bid placed successfully!</div>
 
-<!-- FULL FOOTER -->
 <footer>
   <div class="container">
-    <div class="footer-content">
-
-      <div class="footer-section">
-        <h4>About BidPay</h4>
-        <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Press</a></li>
-          <li><a href="#">Blog</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h4>Buy</h4>
-        <ul>
-          <li><a href="#">How to Bid</a></li>
-          <li><a href="#">Buyer Protection</a></li>
-          <li><a href="#">Payment Methods</a></li>
-          <li><a href="#">Shipping</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h4>Sell</h4>
-        <ul>
-          <li><a href="add-item.html">Start Selling</a></li>
-          <li><a href="#">Seller Center</a></li>
-          <li><a href="#">Fees</a></li>
-          <li><a href="#">Seller Protection</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-section">
-        <h4>Support</h4>
-        <ul>
-          <li><a href="#">Help Center</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Community</a></li>
-          <li><a href="#">Resolution Center</a></li>
-        </ul>
-      </div>
-
-    </div>
-
     <div class="footer-bottom">
       &copy; 2025 BidPay | All Rights Reserved
     </div>
@@ -154,154 +100,140 @@
 </footer>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const API_URL = "https://bid-bay-be.onrender.com/api/items";
-  let selectedItemId = null;
+/* 🔑 AUTO API SWITCH */
+const API_URL = location.hostname.includes("localhost")
+  ? "http://localhost:3000/api/items"
+  : "https://bid-bay-be.onrender.com/api/items";
 
-  const modal = document.getElementById("bidModal");
-  const bidInput = document.getElementById("bidInput");
-  const modalTitle = document.getElementById("modalItemTitle");
-  const toast = document.getElementById("successToast");
+let selectedItemId = null;
 
-  /* ---------------- AUTH STATE ---------------- */
-  const authBtn = document.getElementById("authBtn");
-  const sellLink = document.getElementById("sellLink");
-  const sellHeroBtn = document.getElementById("sellHeroBtn");
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
+/* ---------------- AUTH ---------------- */
+const authBtn = document.getElementById("authBtn");
+const sellLink = document.getElementById("sellLink");
+const sellHeroBtn = document.getElementById("sellHeroBtn");
+const isLoggedIn = localStorage.getItem("isLoggedIn");
 
-  if (isLoggedIn === "true") {
-    authBtn.textContent = "Logout";
-    authBtn.onclick = () => {
-      localStorage.clear();
-      window.location.reload();
-    };
-    sellLink.href = "add-item.html";
-    sellHeroBtn.href = "add-item.html";
-  } else {
-    authBtn.textContent = "Sign In";
-    authBtn.href = "signIn.html";
-    sellLink.onclick = sellHeroBtn.onclick = () => {
-      alert("Please sign in to sell an item");
-      window.location.href = "signIn.html";
-    };
-  }
-
-  /* ---------------- TIMER ---------------- */
-  function getFakeEndTime(itemId) {
-    const seed = parseInt(itemId.slice(-2), 16);
-    const days = seed % 4;
-    const hours = (seed * 5) % 24;
-
-    if (days === 0) return `Ends in: ${hours + 2}h`;
-    return `Ends in: ${days}d ${hours}h`;
-  }
-
-  function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 2500);
-  }
-
-  async function loadFurniture() {
-    const res = await fetch(`${API_URL}?category=furniture`);
-    const items = await res.json();
-
-    const bedroom = document.getElementById("bedroom");
-    const living = document.getElementById("living");
-    const kitchen = document.getElementById("kitchen");
-
-    bedroom.innerHTML = "";
-    living.innerHTML = "";
-    kitchen.innerHTML = "";
-
-    items.forEach(item => {
-      const price = item.latestBid ?? item.currentPrice;
-
-      const card = `
-        <div class="auction-card">
-          <div class="auction-image">
-            <img src="${item.image}" alt="${item.title}" />
-          </div>
-          <div class="auction-details">
-            <h3>${item.title}</h3>
-            <p class="auction-price">$${price}</p>
-            <div class="auction-info">
-              <span>${getFakeEndTime(item._id)}</span>
-              <span>${item.bids.length} bids</span>
-            </div>
-            <button class="bid-btn" data-id="${item._id}" data-title="${item.title}">
-              Place Bid
-            </button>
-          </div>
-        </div>
-      `;
-
-      if (item.subCategory === "bedroom") bedroom.insertAdjacentHTML("beforeend", card);
-      if (item.subCategory === "living") living.insertAdjacentHTML("beforeend", card);
-      if (item.subCategory === "kitchen") kitchen.insertAdjacentHTML("beforeend", card);
-    });
-  }
-
-  window.showSection = (section) => {
-    ["bedroom", "living", "kitchen"].forEach(id => {
-      document.getElementById(id).style.display = "none";
-    });
-    document.getElementById(section).style.display = "grid";
+if (isLoggedIn === "true") {
+  authBtn.textContent = "Logout";
+  authBtn.onclick = () => {
+    localStorage.clear();
+    window.location.reload();
   };
+  sellLink.href = sellHeroBtn.href = "add-item.html";
+} else {
+  authBtn.textContent = "Sign In";
+  authBtn.href = "signIn.html";
+  sellLink.onclick = sellHeroBtn.onclick = () => {
+    alert("Please sign in to sell an item");
+    window.location.href = "signIn.html";
+  };
+}
 
-  document.addEventListener("click", async (e) => {
-    if (e.target.classList.contains("bid-btn")) {
+/* ---------------- TIMER ---------------- */
+function getFakeEndTime(itemId) {
+  const seed = parseInt(itemId.slice(-2), 16);
+  const days = seed % 4;
+  const hours = (seed * 5) % 24;
+  return days === 0 ? `Ends in: ${hours + 2}h` : `Ends in: ${days}d ${hours}h`;
+}
 
-      if (localStorage.getItem("isLoggedIn") !== "true") {
-        alert("Please sign in to place a bid");
-        window.location.href = "signIn.html";
-        return;
-      }
+function showToast(msg) {
+  const toast = document.getElementById("successToast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2500);
+}
 
-      selectedItemId = e.target.dataset.id;
-      modalTitle.textContent = "Item: " + e.target.dataset.title;
-      bidInput.value = "";
-      modal.style.display = "flex";
-      return;
-    }
+/* ---------------- LOAD FURNITURE ---------------- */
+async function loadFurniture() {
+  const res = await fetch(`${API_URL}?category=furniture`, { cache: "no-store" });
+  const items = await res.json();
 
-    if (e.target.id === "cancelBid") {
-      modal.style.display = "none";
-      return;
-    }
+  const bedroom = document.getElementById("bedroom");
+  const living = document.getElementById("living");
+  const kitchen = document.getElementById("kitchen");
 
-    if (e.target.id === "submitBid") {
-      const amount = Number(bidInput.value);
+  bedroom.innerHTML = living.innerHTML = kitchen.innerHTML = "";
 
-      if (!amount || amount <= 0) {
-        showToast("Enter a valid bid amount");
-        return;
-      }
+  items.forEach(item => {
+    const price =
+      item.bids.length > 0
+        ? item.bids[item.bids.length - 1].amount
+        : item.currentPrice;
 
-      try {
-        const res = await fetch(`${API_URL}/${selectedItemId}/bid`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount })
-        });
+    const card = `
+      <div class="auction-card">
+        <div class="auction-image">
+          <img src="${item.image}" alt="${item.title}" />
+        </div>
+        <div class="auction-details">
+          <h3>${item.title}</h3>
+          <p class="auction-price">$${price}</p>
+          <div class="auction-info">
+            <span>${getFakeEndTime(item._id)}</span>
+            <span>${item.bids.length} bids</span>
+          </div>
+          <button class="bid-btn" data-id="${item._id}" data-title="${item.title}">
+            Place Bid
+          </button>
+        </div>
+      </div>
+    `;
 
-        if (!res.ok) {
-          showToast("Bid failed");
-          return;
-        }
+    if (item.subCategory === "bedroom") bedroom.insertAdjacentHTML("beforeend", card);
+    if (item.subCategory === "living") living.insertAdjacentHTML("beforeend", card);
+    if (item.subCategory === "kitchen") kitchen.insertAdjacentHTML("beforeend", card);
+  });
+}
 
-        modal.style.display = "none";
-        showToast("Bid placed successfully!");
-        await loadFurniture();
+/* CATEGORY SWITCH */
+window.showSection = section => {
+  ["bedroom", "living", "kitchen"].forEach(id =>
+    document.getElementById(id).style.display = "none"
+  );
+  document.getElementById(section).style.display = "grid";
+};
 
-      } catch {
-        showToast("Network error placing bid");
-      }
-    }
+/* ---------------- BID HANDLING ---------------- */
+document.addEventListener("click", async e => {
+  if (!e.target.classList.contains("bid-btn")) return;
+
+  if (localStorage.getItem("isLoggedIn") !== "true") {
+    alert("Please sign in to place a bid");
+    window.location.href = "signIn.html";
+    return;
+  }
+
+  selectedItemId = e.target.dataset.id;
+  document.getElementById("modalItemTitle").textContent =
+    "Item: " + e.target.dataset.title;
+  document.getElementById("bidInput").value = "";
+  document.getElementById("bidModal").style.display = "flex";
+});
+
+document.getElementById("cancelBid").onclick = () => {
+  document.getElementById("bidModal").style.display = "none";
+};
+
+document.getElementById("submitBid").onclick = async () => {
+  const amount = Number(document.getElementById("bidInput").value);
+  if (!amount || amount <= 0) return;
+
+  const res = await fetch(`${API_URL}/${selectedItemId}/bid`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ amount })
   });
 
-  loadFurniture();
-});
+  if (res.ok) {
+    showToast("Bid placed successfully!");
+    await loadFurniture();
+  }
+
+  document.getElementById("bidModal").style.display = "none";
+};
+
+loadFurniture();
 </script>
 
 </body>
