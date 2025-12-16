@@ -9,6 +9,7 @@
 
 <body>
 
+<!-- HEADER -->
 <header>
   <div class="container">
     <nav>
@@ -29,22 +30,32 @@
             <a href="vehicles.html">Cars</a>
           </div>
         </div>
-        <a href="#">Watch List</a>
-        <a href="#">My BidPay</a>
-        <a href="#" class="btn-primary">Sign In</a>
+
+        <!-- SELL (PROTECTED) -->
+        <a href="#" id="sellLink">Sell</a>
+
+        <!-- AUTH -->
+        <a href="#" class="btn-primary" id="authBtn">Sign In</a>
       </div>
     </nav>
   </div>
 </header>
 
+<!-- HERO -->
 <section class="hero">
-  <div class="container">
+  <div class="container hero-content">
     <h1>Bid, Buy, and Sell with Confidence</h1>
     <p>Discover unique items and win amazing deals</p>
+
+    <div class="hero-buttons">
+      <a href="#auctions" class="btn btn-large">View Auctions</a>
+      <a href="#" class="btn btn-outline" id="sellHeroBtn">Sell</a>
+    </div>
   </div>
 </section>
 
-<section class="featured-auctions">
+<!-- AUCTIONS -->
+<section class="featured-auctions" id="auctions">
   <div class="container">
     <h2 class="section-title">Top Auction Items</h2>
     <div class="auction-grid" id="itemsContainer"></div>
@@ -67,12 +78,55 @@
 </div>
 
 <!-- SUCCESS TOAST -->
-<div id="successToast" class="toast">
-  Bid placed successfully!
-</div>
+<div id="successToast" class="toast">Bid placed successfully!</div>
 
+<!-- FULL FOOTER -->
 <footer>
   <div class="container">
+    <div class="footer-content">
+
+      <div class="footer-section">
+        <h4>About BidPay</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Buy</h4>
+        <ul>
+          <li><a href="#">How to Bid</a></li>
+          <li><a href="#">Buyer Protection</a></li>
+          <li><a href="#">Payment Methods</a></li>
+          <li><a href="#">Shipping</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Sell</h4>
+        <ul>
+          <li><a href="add-item.html">Start Selling</a></li>
+          <li><a href="#">Seller Center</a></li>
+          <li><a href="#">Fees</a></li>
+          <li><a href="#">Seller Protection</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Resolution Center</a></li>
+        </ul>
+      </div>
+
+    </div>
+
     <div class="footer-bottom">
       &copy; 2025 BidPay | All Rights Reserved
     </div>
@@ -83,17 +137,40 @@
 const API_URL = "https://bid-bay-be.onrender.com/api/items";
 let selectedItemId = null;
 
-/* ✅ TIMER HELPER (ADDED) */
+/* ---------------- AUTH STATE ---------------- */
+const authBtn = document.getElementById("authBtn");
+const sellLink = document.getElementById("sellLink");
+const sellHeroBtn = document.getElementById("sellHeroBtn");
+const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+if (isLoggedIn === "true") {
+  authBtn.textContent = "Logout";
+  authBtn.onclick = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+  sellLink.href = "add-item.html";
+  sellHeroBtn.href = "add-item.html";
+} else {
+  authBtn.textContent = "Sign In";
+  authBtn.href = "signIn.html";
+  sellLink.onclick = sellHeroBtn.onclick = () => {
+    alert("Please sign in to sell an item");
+    window.location.href = "signIn.html";
+  };
+}
+
+/* ---------------- TIMER ---------------- */
 function getFakeEndTime(itemId) {
   const seed = parseInt(itemId.slice(-2), 16);
-  const days = seed % 4;        // 0–3 days
+  const days = seed % 4;
   const hours = (seed * 5) % 24;
 
   if (days === 0) return `Ends in: ${hours + 2}h`;
   return `Ends in: ${days}d ${hours}h`;
 }
 
-/* LOAD TOP 6 MOST-BID ITEMS */
+/* ---------------- LOAD ITEMS ---------------- */
 async function loadTopItems() {
   const res = await fetch(API_URL);
   const items = await res.json();
@@ -129,9 +206,16 @@ async function loadTopItems() {
 
 loadTopItems();
 
-/* OPEN MODAL */
+/* ---------------- BID HANDLING ---------------- */
 document.addEventListener("click", e => {
   if (e.target.classList.contains("bid-btn")) {
+
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      alert("Please sign in to place a bid");
+      window.location.href = "signIn.html";
+      return;
+    }
+
     selectedItemId = e.target.dataset.id;
     document.getElementById("modalItemTitle").textContent =
       "Item: " + e.target.dataset.title;

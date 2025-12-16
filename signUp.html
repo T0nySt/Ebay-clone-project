@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up | BidPay</title>
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="auth.css" />
+</head>
+
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <a href="index.html" class="logo">BidPay</a>
+
+      <div class="search-bar">
+        <input type="text" placeholder="Search for anything..." />
+        <button>Search</button>
+      </div>
+
+      <div class="nav-links">
+        <div class="dropdown">
+          <button class="dropbutton">Pages ▾</button>
+          <div class="dropdown-content">
+            <a href="index.html">Home</a>
+            <a href="electronics.html">Electronics</a>
+            <a href="furniture.html">Furniture</a>
+            <a href="vehicles.html">Cars</a>
+          </div>
+        </div>
+        <a href="#" class="btn-primary">Sign In</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="bg">
+  <form onsubmit="signup(event)">
+    <div class="sign_in">
+      <h2>Create Account</h2>
+
+      <label>Email</label>
+      <input type="email" required>
+
+      <label>Username</label>
+      <input type="text" required>
+
+      <label>Password</label>
+      <input type="password" required>
+
+      <p>Already have an account?
+        <a href="signIn.html">Sign In</a>
+      </p>
+
+      <button type="submit">Sign Up</button>
+    </div>
+  </form>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      &copy; 2025 BidPay | All Rights Reserved
+    </div>
+  </div>
+</footer>
+
+<script>
+function signup(e) {
+  e.preventDefault();
+  alert("Account created! Please sign in.");
+  window.location.href = "signIn.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BidPay | Sell an Item</title>
+
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="add-item.css" />
+</head>
+
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <a href="index.html" class="logo">BidPay</a>
+
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="add-item.html" class="btn-primary">Sell</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="sell-section">
+  <div class="sell-card">
+    <h1>List a New Item</h1>
+    <p>Fill out the details below to start an auction</p>
+
+    <form id="addItemForm">
+
+      <label>Item Title</label>
+      <input type="text" id="title" required />
+
+      <label>Category</label>
+      <select id="category" required>
+        <option value="">Select category</option>
+        <option value="electronics">Electronics</option>
+        <option value="furniture">Furniture</option>
+        <option value="vehicles">Vehicles</option>
+      </select>
+
+      <label>Sub Category</label>
+      <select id="subCategory" required>
+        <option value="">Select sub-category</option>
+      </select>
+
+      <label>Starting Price ($)</label>
+      <input type="number" id="price" required />
+
+      <label>Image URL</label>
+      <input type="text" id="image" required />
+
+      <label>Description</label>
+      <textarea id="description" rows="4"></textarea>
+
+      <button type="submit" class="submit-btn">Post Item</button>
+    </form>
+
+    <p id="statusMsg"></p>
+  </div>
+</section>
+
+<script>
+const API_URL = "http://localhost:3000/api/items";
+
+const categorySelect = document.getElementById("category");
+const subCategorySelect = document.getElementById("subCategory");
+
+const subCategories = {
+  electronics: ["phones", "laptops", "gaming", "accessories"],
+  furniture: ["bedroom", "living", "kitchen"],
+  vehicles: ["car", "truck", "motorcycle"]
+};
+
+categorySelect.addEventListener("change", () => {
+  subCategorySelect.innerHTML = '<option value="">Select sub-category</option>';
+  const selected = categorySelect.value;
+
+  if (subCategories[selected]) {
+    subCategories[selected].forEach(sub => {
+      const opt = document.createElement("option");
+      opt.value = sub;
+      opt.textContent = sub;
+      subCategorySelect.appendChild(opt);
+    });
+  }
+});
+
+document.getElementById("addItemForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const item = {
+    title: document.getElementById("title").value,
+    category: categorySelect.value,
+    subCategory: subCategorySelect.value,
+    currentPrice: Number(document.getElementById("price").value),
+    image: document.getElementById("image").value,
+    description: document.getElementById("description").value
+  };
+
+  const status = document.getElementById("statusMsg");
+  status.textContent = "Posting item...";
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(item)
+    });
+
+    if (!res.ok) throw new Error();
+
+    status.textContent = "✅ Item listed successfully!";
+    e.target.reset();
+  } catch {
+    status.textContent = "❌ Failed to post item";
+  }
+});
+</script>
+
+</body>
+</html>

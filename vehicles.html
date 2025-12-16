@@ -27,14 +27,17 @@
           <button class="dropbutton">Pages ▾</button>
           <div class="dropdown-content">
             <a href="index.html">Home</a>
-            <a href="Electronics.html">Electronics</a>
-            <a href="Furniture.html">Furniture</a>
+            <a href="electronics.html">Electronics</a>
+            <a href="furniture.html">Furniture</a>
             <a href="vehicles.html">Cars</a>
           </div>
         </div>
-        <a href="#">Watch List</a>
-        <a href="#">My BidPay</a>
-        <a href="#" class="btn-primary">Sign In</a>
+
+        <!-- SELL (PROTECTED) -->
+        <a href="#" id="sellLink">Sell</a>
+
+        <!-- AUTH BUTTON -->
+        <a href="#" class="btn-primary" id="authBtn">Sign In</a>
       </div>
     </nav>
   </div>
@@ -42,9 +45,14 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-content">
+  <div class="container hero-content">
     <h1>Top Vehicle Auctions</h1>
     <p>Bid on cars, trucks, and motorcycles</p>
+
+    <div class="hero-buttons">
+      <a href="#auctions" class="btn btn-large">View Auctions</a>
+      <a href="#" class="btn btn-outline" id="sellHeroBtn">Sell Vehicles</a>
+    </div>
   </div>
 </section>
 
@@ -72,11 +80,55 @@
 <!-- SUCCESS TOAST -->
 <div id="successToast" class="toast">Bid placed successfully!</div>
 
-<!-- FOOTER -->
+<!-- FULL FOOTER -->
 <footer>
   <div class="container">
+    <div class="footer-content">
+
+      <div class="footer-section">
+        <h4>About BidPay</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Buy</h4>
+        <ul>
+          <li><a href="#">How to Bid</a></li>
+          <li><a href="#">Buyer Protection</a></li>
+          <li><a href="#">Payment Methods</a></li>
+          <li><a href="#">Shipping</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Sell</h4>
+        <ul>
+          <li><a href="add-item.html">Start Selling</a></li>
+          <li><a href="#">Seller Center</a></li>
+          <li><a href="#">Fees</a></li>
+          <li><a href="#">Seller Protection</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Resolution Center</a></li>
+        </ul>
+      </div>
+
+    </div>
+
     <div class="footer-bottom">
-      © 2025 BidPay. All Rights Reserved.
+      &copy; 2025 BidPay | All Rights Reserved
     </div>
   </div>
 </footer>
@@ -85,10 +137,33 @@
 const API_URL = "https://bid-bay-be.onrender.com/api/items";
 let selectedItemId = null;
 
-/* ✅ TIMER HELPER (ADDED) */
+/* ---------------- AUTH STATE ---------------- */
+const authBtn = document.getElementById("authBtn");
+const sellLink = document.getElementById("sellLink");
+const sellHeroBtn = document.getElementById("sellHeroBtn");
+const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+if (isLoggedIn === "true") {
+  authBtn.textContent = "Logout";
+  authBtn.onclick = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+  sellLink.href = "add-item.html";
+  sellHeroBtn.href = "add-item.html";
+} else {
+  authBtn.textContent = "Sign In";
+  authBtn.href = "signIn.html";
+  sellLink.onclick = sellHeroBtn.onclick = () => {
+    alert("Please sign in to sell an item");
+    window.location.href = "signIn.html";
+  };
+}
+
+/* ---------------- TIMER ---------------- */
 function getFakeEndTime(itemId) {
   const seed = parseInt(itemId.slice(-2), 16);
-  const days = seed % 4;        // 0–3 days
+  const days = seed % 4;
   const hours = (seed * 5) % 24;
 
   if (days === 0) return `Ends in: ${hours + 2}h`;
@@ -109,16 +184,13 @@ async function loadVehicles() {
         <div class="auction-image">
           <img src="${item.image}" alt="${item.title}">
         </div>
-
         <div class="auction-details">
           <h3>${item.title}</h3>
           <p class="auction-price">$${item.latestBid ?? item.currentPrice}</p>
-
           <div class="auction-info">
             <span>${getFakeEndTime(item._id)}</span>
             <span>${item.bids.length} bids</span>
           </div>
-
           <button class="bid-btn"
             data-id="${item._id}"
             data-title="${item.title}">
@@ -132,41 +204,46 @@ async function loadVehicles() {
 
 loadVehicles();
 
-/* OPEN MODAL */
-document.addEventListener("click", e => {
+/* BID HANDLING */
+document.addEventListener("click", async e => {
   if (e.target.classList.contains("bid-btn")) {
+
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      alert("Please sign in to place a bid");
+      window.location.href = "signIn.html";
+      return;
+    }
+
     selectedItemId = e.target.dataset.id;
     document.getElementById("modalItemTitle").innerText =
       "Item: " + e.target.dataset.title;
     document.getElementById("bidInput").value = "";
     document.getElementById("bidModal").style.display = "flex";
   }
+
+  if (e.target.id === "cancelBid") {
+    document.getElementById("bidModal").style.display = "none";
+  }
+
+  if (e.target.id === "submitBid") {
+    const amount = Number(document.getElementById("bidInput").value);
+    if (!amount || amount <= 0) return;
+
+    await fetch(`${API_URL}/${selectedItemId}/bid`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount })
+    });
+
+    document.getElementById("bidModal").style.display = "none";
+
+    const toast = document.getElementById("successToast");
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2500);
+
+    loadVehicles();
+  }
 });
-
-/* CLOSE MODAL */
-document.getElementById("cancelBid").onclick = () => {
-  document.getElementById("bidModal").style.display = "none";
-};
-
-/* SUBMIT BID */
-document.getElementById("submitBid").onclick = async () => {
-  const amount = Number(document.getElementById("bidInput").value);
-  if (!amount || amount <= 0) return;
-
-  await fetch(`${API_URL}/${selectedItemId}/bid`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ amount })
-  });
-
-  document.getElementById("bidModal").style.display = "none";
-
-  const toast = document.getElementById("successToast");
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2500);
-
-  loadVehicles();
-};
 </script>
 
 </body>

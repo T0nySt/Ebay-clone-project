@@ -1,0 +1,76 @@
+/* AUTH PAGE BACKGROUND */
+.bg {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+  
+  /* AUTH CARD */
+  .sign_in {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* HEADERS */
+  .sign_in h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #1f2937;
+  }
+  
+  /* INPUTS */
+  .sign_in label {
+    margin-top: 1rem;
+    font-weight: 600;
+  }
+  
+  .sign_in input {
+    padding: 0.7rem;
+    margin-top: 0.3rem;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+  }
+  
+  /* BUTTON */
+  .sign_in button {
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .sign_in button:hover {
+    background: #5568d3;
+  }
+  
+  /* LINK */
+  .sign_in p {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  
+  .sign_in a {
+    color: #667eea;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .sign_in a:hover {
+    text-decoration: underline;
+  }
+  
