@@ -3,11 +3,11 @@
 
 Bid-Bay is a full-stack web-based auction marketplace inspired by eBay. Built by a team of four, it serves as a dual-sided platform where users can list items for auction as sellers and place competitive bids as buyers.
 
-🔗 **Live Demo:** [bidpay.netlify.app](https://bidpay.netlify.app)
+**Live Demo:** [bidpay.netlify.app](https://bidpay.netlify.app)
 
 ---
 
-## 👥 Team
+## Team
 - Raymond Huang, Tony Stone, Boris Maho, Prabodh KC.
 
 ---
