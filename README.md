@@ -8,7 +8,7 @@ Bid-Bay is a full-stack web-based auction marketplace inspired by eBay. Built by
 ---
 
 ## Contributors: 
-- github.com/rh442, Tony Stone , github.com/Timibori , github.com/prabodhkc .
+- github.com/rh442, github.com/T0nySt , github.com/Timibori , github.com/prabodhkc .
 
 ---
 
